@@ -2,6 +2,7 @@ package com.example.tacocloud;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 public class Taco {
@@ -11,14 +12,21 @@ public class Taco {
     private String name;
 
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    private List<String> ingredients;
+    private List<Ingredient> ingredients;
+
+
+    private Long id;
+
+    private Date createdAt;
 
     public Taco() {
     }
 
-    public Taco(String name, List<String> ingredients) {
+    public Taco(String name, List<Ingredient> ingredients, Long id, Date createdAt) {
         this.name = name;
         this.ingredients = ingredients;
+        this.id  = id;
+        this.createdAt = createdAt;
     }
 
     public String getName() {
@@ -29,11 +37,28 @@ public class Taco {
         this.name = name;
     }
 
-    public List<String> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<String> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 }
+

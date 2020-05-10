@@ -1,10 +1,12 @@
 package com.example.tacocloud;
 
+import java.util.List;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 public class Order {
 
@@ -32,10 +34,17 @@ public class Order {
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
+    private Long id;
+
+    private Date placedAt;
+
+    private List<Taco> tacos;
+
     public Order() {
     }
 
-    public Order(String name, String street, String city, String state, String zip, String ccNumber, String ccExpiration, String ccCVV) {
+    public Order(String name, String street, String city, String state, String zip, String ccNumber, String ccExpiration,
+                 String ccCVV, Long id, Date placedAt) {
         this.name = name;
         this.street = street;
         this.city = city;
@@ -44,6 +53,8 @@ public class Order {
         this.ccNumber = ccNumber;
         this.ccExpiration = ccExpiration;
         this.ccCVV = ccCVV;
+        this.id = id;
+        this.placedAt = placedAt;
     }
 
     public String getName() {
@@ -110,14 +121,44 @@ public class Order {
         this.ccCVV = ccCVV;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getPlacedAt() {
+        return placedAt;
+    }
+
+    public void setPlacedAt(Date placedAt) {
+        this.placedAt = placedAt;
+    }
+
+    public List<Taco> getTacos() {
+        return tacos;
+    }
+
+    public void setTacos(List<Taco> tacos) {
+        this.tacos = tacos;
+    }
+
+    public void addDesign(Taco taco) {
+        this.tacos.add(taco);
+    }
+
     public String toString() {
-        return "name: " + getName() + ", " +
+        return "id: " + getId() +
+                "name: " + getName() + ", " +
                 "street: " + getStreet() + ", " +
                 "city: " + getCity() + ", " +
                 "state: " + getState() + ", " +
                 "zip: " + getZip() + ", " +
                 "ccNumber: " + getCcNumber() + ", " +
                 "ccExpiration: " + getCcExpiration() + ", " +
-                "ccCVV: " + getCcCVV();
+                "ccCVV: " + getCcCVV() +
+                "placedAt: " + getPlacedAt();
     }
 }
