@@ -2,6 +2,7 @@ package com.example.tacocloud.controller;
 
 
 import com.example.tacocloud.Order;
+import com.example.tacocloud.data.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,11 @@ import javax.validation.Valid;
 public class OrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private OrderRepository orderRepository;
+
+    public OrderController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     @GetMapping("/current")
     public String orderForm(Model model) {

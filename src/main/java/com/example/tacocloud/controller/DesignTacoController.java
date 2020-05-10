@@ -2,8 +2,11 @@ package com.example.tacocloud.controller;
 
 import com.example.tacocloud.Ingredient;
 import com.example.tacocloud.Taco;
+import com.example.tacocloud.data.IngredientRepository;
+import com.example.tacocloud.data.TacoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -21,6 +24,14 @@ import java.util.stream.Collectors;
 public class DesignTacoController {
 
     private static final Logger logger = LoggerFactory.getLogger(DesignTacoController.class);
+    private final IngredientRepository ingredientRepository;
+    private TacoRepository designRepository;
+
+    @Autowired
+    public  DesignTacoController(IngredientRepository ingredientRepository, TacoRepository designRepository) {
+        this.ingredientRepository = ingredientRepository;
+        this.designRepository = designRepository;
+    }
 
     @GetMapping
     public String showDesignForm(Model model) {

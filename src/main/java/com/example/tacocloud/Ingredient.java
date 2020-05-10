@@ -1,10 +1,21 @@
 package com.example.tacocloud;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Ingredient {
 
+    @Id
     private final String id;
     private final String name;
     private final Type type;
+
+    private Ingredient() {
+        this.id = null;
+        this.name = null;
+        this.type = null;
+    }
 
     public Ingredient(String id, String name, Type type) {
         this.id = id;
