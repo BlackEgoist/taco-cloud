@@ -1,5 +1,6 @@
 package com.example.tacocloud;
 
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class Taco {
 
     @ManyToMany(targetEntity = Ingredient.class)
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     public Taco() {
     }
