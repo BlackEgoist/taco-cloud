@@ -17,14 +17,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(
-                        "select username, password, enabled from Users " +
-                                "where username=?")
-                .authoritiesByUsernameQuery(
-                        "select username, authority from UserAuthorities " +
-                                "where username=?")
-                .passwordEncoder(new BCryptPasswordEncoder());
+        auth.ldapAuthentication()
+                .userSearchBase("ou=people")//ou - organizational unit
+                .userSearchFilter("(uid={0})")
+                .groupSearchBase("ou=groups")
+                .groupSearchFilter("member={0}")
+                .passwordCompare()
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .passwordAttribute("passcode")
+                .contextSource()
+                .root("dc=tacoclud,dc=com").ldif("classpath:users.ldif");
     }
 }
