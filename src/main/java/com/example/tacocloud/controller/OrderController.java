@@ -4,8 +4,12 @@ package com.example.tacocloud.controller;
 import com.example.tacocloud.Order;
 import com.example.tacocloud.User;
 import com.example.tacocloud.data.OrderRepository;
+import com.example.tacocloud.web.OrderProps;
+import java.awt.print.Pageable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +30,11 @@ public class OrderController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     private OrderRepository orderRepository;
 
-    public OrderController(OrderRepository orderRepository) {
+    private OrderProps props;
+
+    public OrderController(OrderRepository orderRepository, OrderProps props) {
         this.orderRepository = orderRepository;
+        this.props = props;
     }
 
     @GetMapping("/current")
@@ -49,5 +56,15 @@ public class OrderController {
         sessionStatus.setComplete();
 
         return "redirect:/";
+    }
+
+    @GetMapping
+    public String ordersForUser(
+            @AuthenticationPrincipal User user, Model model) {
+        Pageable pageable = (Pageable) PageRequest.of(0, props.getPageSize());
+        model.addAttribute("orders",
+                orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+
+        return "orderList";
     }
 }
