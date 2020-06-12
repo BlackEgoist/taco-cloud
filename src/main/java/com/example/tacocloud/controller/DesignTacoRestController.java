@@ -2,12 +2,17 @@ package com.example.tacocloud.controller;
 
 import com.example.tacocloud.Taco;
 import com.example.tacocloud.data.TacoRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.server.mvc.ControllerLinkRelationProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,9 +33,17 @@ public class DesignTacoRestController {
     }
 
     @GetMapping("/recent")
-    public Iterable<Taco> recentTacos() {
+    public Resources<Resource<Taco>> recentTacos() {
         PageRequest page = PageRequest.of(0,12, Sort.by("createdAt").descending());
-        return tacoRepository.findAll(page).getContent();
+        List<Taco> tacos =  tacoRepository.findAll(page).getContent();
+        Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
+
+//        recentResources.add(ControllerLinkBuilder.linkTo(DesignTacoRestController.class)
+//        .slash("recent")
+//        .withRel("recents"));
+        recentResources.add(ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(DesignTacoRestController.class).recentTacos())
+        .withRel("recents"));
+        return recentResources;
     }
 
     @GetMapping("/{id}")
